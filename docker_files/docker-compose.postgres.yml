@@ -1,0 +1,16 @@
+services: 
+  database:
+    image: postgres
+    ports:
+      - 5420:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: devdb
+
+volumes:
+  pgdata:
+
+# DATABASE_URL=postgresql://devuser:devpassword@localhost:5420/devdb <- database url
