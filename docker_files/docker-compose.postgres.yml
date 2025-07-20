@@ -1,16 +1,17 @@
 services: 
   database:
     image: postgres
+    container_name: postgres_testing
     ports:
       - 5420:5432
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - postgres_testing_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: devuser
       POSTGRES_PASSWORD: devpassword
       POSTGRES_DB: devdb
 
 volumes:
-  pgdata:
+  postgres_testing_data:
 
 # DATABASE_URL=postgresql://devuser:devpassword@localhost:5420/devdb <- database url
