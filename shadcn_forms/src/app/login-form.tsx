@@ -7,30 +7,31 @@ import { createUser } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { FormSchemaType, formSchema } from "@/lib/zod";
+import { User } from "@/db/schema";
 import { useFormStore } from "@/lib/store";
 import { useEffect } from "react";
 
-export default function LoginForm() {
+export default function LoginForm(firstUser: User) {
   const { formData, updateFormData, resetFormData } = useFormStore();
   
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: formData.name || "",
-      age: formData.age || "",
-      email: formData.email || ""
+      name: formData.name || firstUser?.name || "",
+      age: formData.age || firstUser?.age?.toString() || "",
+      email: formData.email || firstUser?.email || ""
     }
   })
 
   useEffect(() => {
     if (formData.name || formData.age || formData.email) {
       form.reset({
-        name: formData.name || "",
-        age: formData.age || "",
-        email: formData.email || ""
+        name: formData.name || firstUser?.name || "",
+        age: formData.age || firstUser?.age?.toString() || "",
+        email: formData.email || firstUser?.email || ""
       });
     }
-  }, [formData, form]);
+  }, [formData, firstUser, form]);
 
   async function onSubmit(values: FormSchemaType) {
     await createUser(values)
@@ -40,7 +41,6 @@ export default function LoginForm() {
 
   return (
     <div className="w-md mx-auto flex flex-col gap-4 p-4">
-      {/* 👇 CENTRALIZED ERROR BLOCK */}
       {Object.entries(form.formState.errors).length > 0 && (
         <div className="rounded-md border border-destructive bg-destructive/10 p-4 text-destructive text-sm space-y-1">
           {Object.entries(form.formState.errors).map(([fieldName, error]) => (
@@ -60,7 +60,7 @@ export default function LoginForm() {
                 <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder={formData.name || "name"} 
+                    placeholder="name" 
                     {...field} 
                     onChange={(e) => {
                       field.onChange(e);
@@ -79,7 +79,7 @@ export default function LoginForm() {
                 <FormLabel>Age</FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder={formData.age || "age"} 
+                    placeholder="age" 
                     {...field} 
                     onChange={(e) => {
                       field.onChange(e);
@@ -99,7 +99,7 @@ export default function LoginForm() {
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder={formData.email || "email"} 
+                    placeholder="email" 
                     {...field} 
                     onChange={(e) => {
                       field.onChange(e);
