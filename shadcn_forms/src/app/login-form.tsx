@@ -4,34 +4,31 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { createUser } from "@/lib/actions";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { FormSchemaType, formSchema } from "@/lib/zod";
-import { User } from "@/db/schema";
 import { useFormStore } from "@/lib/store";
+import { FormSchemaType, formSchema } from "@/lib/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
-export default function LoginForm(firstUser: User) {
+export default function LoginForm() {
   const { formData, updateFormData, resetFormData } = useFormStore();
-  
+
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: formData.name || firstUser?.name || "",
-      age: formData.age || firstUser?.age?.toString() || "",
-      email: formData.email || firstUser?.email || ""
+      name: formData.name || "",
+      age: formData.age || "",
+      email: formData.email || ""
     }
   })
 
   useEffect(() => {
-    if (formData.name || formData.age || formData.email) {
-      form.reset({
-        name: formData.name || firstUser?.name || "",
-        age: formData.age || firstUser?.age?.toString() || "",
-        email: formData.email || firstUser?.email || ""
-      });
-    }
-  }, [formData, firstUser, form]);
+    form.reset({
+      name: formData.name || "",
+      age: formData.age || "",
+      email: formData.email || ""
+    });
+  }, [formData, form]);
 
   async function onSubmit(values: FormSchemaType) {
     await createUser(values)
@@ -59,9 +56,9 @@ export default function LoginForm(firstUser: User) {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="name" 
-                    {...field} 
+                  <Input
+                    placeholder="name"
+                    {...field}
                     onChange={(e) => {
                       field.onChange(e);
                       updateFormData('name', e.target.value);
@@ -78,9 +75,9 @@ export default function LoginForm(firstUser: User) {
               <FormItem>
                 <FormLabel>Age</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="age" 
-                    {...field} 
+                  <Input
+                    placeholder="age"
+                    {...field}
                     onChange={(e) => {
                       field.onChange(e);
                       updateFormData('age', e.target.value);
@@ -98,9 +95,9 @@ export default function LoginForm(firstUser: User) {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="email" 
-                    {...field} 
+                  <Input
+                    placeholder="email"
+                    {...field}
                     onChange={(e) => {
                       field.onChange(e);
                       updateFormData('email', e.target.value);
