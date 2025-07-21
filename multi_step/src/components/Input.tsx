@@ -1,5 +1,8 @@
 'use client';
 
+import { useAddDealContext } from "@/contexts/addDealContext";
+import { NewDealInitialValuesType } from "@/schemas";
+
 interface InputProps {
   label: string;
   id: string;
@@ -24,7 +27,15 @@ export default function Input({
   description,
   errorMsg,
 }: InputProps) {
+  const { updateNewDealDetais, newDealData } = useAddDealContext();
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateNewDealDetais({ [e.target.id]: e.target.value })
+  }
+  
   return (
+
+
     <div>
       <label className="block text-lg" htmlFor={id}>
         {label}
@@ -35,9 +46,8 @@ export default function Input({
         )}
       </label>
       <input
-        className={`w-full rounded-md py-4 px-2 text-slate-900 ${
-          errorMsg ? 'border-red-500' : 'border-slate-300'
-        } border-2`}
+        className={`w-full rounded-md py-4 px-2 text-slate-900 ${errorMsg ? 'border-red-500' : 'border-slate-300'
+          } border-2`}
         type={type}
         name={id}
         id={id}
@@ -46,6 +56,8 @@ export default function Input({
         minLength={minLength}
         min={min}
         max={max}
+        onChange={handleInputChange}
+        value={newDealData[id as keyof NewDealInitialValuesType]}
       />
       <div className="min-h-8 mt-1">
         {errorMsg && (

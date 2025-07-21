@@ -2,6 +2,7 @@
 import clsx from 'clsx';
 import Link from 'next/link';
 import { AddDealRoutes } from '@/types';
+import { usePathname } from 'next/navigation';
 
 const steps = [
   {
@@ -13,7 +14,7 @@ const steps = [
     title: 'Step Two',
     route: 'step-two',
     link: AddDealRoutes.COUPON_DETAILS,
-  },
+  },  
   {
     title: 'Step Three',
     route: 'step-three',
@@ -23,13 +24,15 @@ const steps = [
 ];
 
 export default function StepNavigation() {
-  const currentPath = '';
+  const pathname = usePathname();
+  const currentPath = pathname.split('/').pop();
+  const currentStep = steps.findIndex(step => step.route === currentPath);
 
   return (
     <div className="mb-12 mt-4 lg:mb-0 min-w-60">
       {/* back button */}
       <Link
-        href={'/add'}
+        href={currentStep > 0 ? steps[currentStep - 1].link : '/add'}
         className="mb-4 flex items-center gap-2 text-xl disabled:text-white/50 lg:mb-12 lg:gap-5"
       >
         Back
