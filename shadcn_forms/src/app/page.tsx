@@ -3,18 +3,20 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import createUser from "@/lib/actions";
+import { createUser } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { FormSchemaType, formSchema } from "@/lib/zod";
+import { User } from "@/db/schema";
 
-export default function LoginForm() {
+export default function LoginForm(firstUser: User) {
+
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      age: "0",
-      email: ""
+      name: firstUser?.name,
+      age: firstUser?.age.toString(),
+      email: firstUser?.email
     }
   })
 
