@@ -54,12 +54,10 @@ export const AddDealContextProvider = ({ children }: { children: React.ReactNode
 
   const readFromLocalStorage = () => {
     const dataString = localStorage.getItem(LOCAL_STORAGE_KEY);
-    console.log(dataString);
     if (!dataString) {
       return setNewDealData(defaultDeal);
     }
     const validated = newDealInitialValuesSchema.safeParse(JSON.parse(dataString));
-    console.log(validated);
     if (!validated.success) {
       return setNewDealData(defaultDeal);
     }
