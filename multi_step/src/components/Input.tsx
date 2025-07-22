@@ -34,8 +34,6 @@ export default function Input({
   }
   
   return (
-
-
     <div>
       <label className="block text-lg" htmlFor={id}>
         {label}
