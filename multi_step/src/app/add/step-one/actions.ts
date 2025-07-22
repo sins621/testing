@@ -15,6 +15,7 @@ export const stepOneFormAction = (
       acc[issue.path[0]] = issue.message
       return acc;
     }, {})
+    console.log(errors)
     return errors
   } else {
     redirect(AddDealRoutes.COUPON_DETAILS);
